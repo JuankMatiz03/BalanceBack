@@ -1,0 +1,33 @@
+generator client {
+  provider  = "prisma-client-js"
+  output    = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  debts     Debt[]
+}
+
+model Debt {
+  id          String     @id @default(uuid())
+  description String
+  amount      Float
+  status      DebtStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum DebtStatus {
+  PENDING
+  PAID
+}

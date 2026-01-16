@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "baseUrl": "src",
+    "paths": {
+      "@entities/*": ["domain/entities/*"],
+      "@repositories/*": ["domain/repositories/*"],
+      "@usecases/*": ["application/usecases/*"],
+      "@controllers/*": ["infrastructure/controllers/*"],
+      "@repositoriesInfrastructure/*": ["infrastructure/repositories/*"],
+      "@middlewares/*": ["infrastructure/middlewares/*"],
+      "@routes/*": ["infrastructure/routes/*"],
+      "@database/*": ["infrastructure/database/*"],
+      "@shared/*": ["shared/*"]
+    }
+  }
+}
