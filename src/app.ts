@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import authRoutes from '@routes/auth.routes';
+import debtRoutes from '@routes/debt.routes'
 import { notFoundMiddleware } from '@middlewares/notFound.middleware';
 import { errorMiddleware } from '@middlewares/error.middleware';
 import { authMiddleware } from '@middlewares/auth.middleware';
@@ -22,7 +23,7 @@ app.get('/health', (_, res) => {
 
 // routes
 app.use('/api/auth', authRoutes);
-app.use('/api/debt', authMiddleware, authRoutes);
+app.use('/api/debt', authMiddleware, debtRoutes);
 
 // middlewares
 app.use(notFoundMiddleware);

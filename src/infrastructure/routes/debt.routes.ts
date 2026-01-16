@@ -1,10 +1,7 @@
 import { Router } from 'express';
-import { authMiddleware } from '@middlewares/debtauth.middleware';
 import { DebtController } from '@controllers/debt/DebtController.controller';
 
 const router = Router();
-
-router.use(authMiddleware);
 
 router.post('/', DebtController.create);
 router.get('/', DebtController.list);

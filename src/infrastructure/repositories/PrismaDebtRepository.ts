@@ -1,35 +1,72 @@
 import { prisma } from '@database/prismaClient';
 import { IDebt } from '@entities/debt/Debt.interface';
-import { DebtStatus } from '@shared/enums/debt.enum';
+import { DebtStatus } from '../../generated/prisma'; 
 
 export class PrismaDebtRepository {
-  create(data: IDebt) {
-    return prisma.debt.create({ data });
-  }
-
-  findByUser(userId: string, status?: DebtStatus) {
-    return prisma.debt.findMany({
-      where: { userId, ...(status && { status }) }
+  
+  async create(data: IDebt) {
+    return await prisma.debt.create({ 
+      data: {
+        description: data.description,
+        amount: data.amount,
+        status: data.status as DebtStatus,
+        userId: data.userId 
+      } 
     });
   }
 
-  findById(id: string) {
-    return prisma.debt.findUnique({ where: { id } });
+  async findByUser(userId: string, status?: DebtStatus) {
+    return await prisma.debt.findMany({
+      where: { 
+        userId, 
+        ...(status && { status }) 
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
   }
 
-  update(id: string, data: IDebt) {
-    return prisma.debt.update({ where: { id }, data });
+  async findById(id: string) {
+    return await prisma.debt.findUnique({ 
+      where: { id },
+      include: { user: true } 
+    });
   }
 
-  delete(id: string) {
-    return prisma.debt.delete({ where: { id } });
+  async update(id: string, data: Partial<IDebt>) {
+    const { userId, ...updateData } = data;
+
+    return await prisma.debt.update({ 
+      where: { id }, 
+      data: {
+        ...updateData,
+        status: updateData.status as DebtStatus
+      }
+    });
   }
 
-  aggregates(userId: string) {
-    return prisma.debt.aggregate({
+  async delete(id: string) {
+    return await prisma.debt.delete({ where: { id } });
+  }
+
+  async aggregates(userId: string) {
+    const result = await prisma.debt.aggregate({
       where: { userId },
       _sum: { amount: true },
-      _count: true
+      _count: { _all: true }, 
+      _avg: { amount: true }  
     });
+
+    return {
+      totalAmount: result._sum.amount || 0,
+      totalCount: result._count._all,
+      averageAmount: result._avg.amount || 0
+    };
   }
 }

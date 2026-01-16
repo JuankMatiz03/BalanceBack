@@ -3,13 +3,13 @@ import { AuthRequest } from '../../middlewares/debtauth.middleware';
 
 import { PrismaDebtRepository } from '../../repositories/PrismaDebtRepository';
 
-import { CreateDebt } from '@usecases/CreateDebt.usecase';
-import { UpdateDebt } from '@usecases/UpdateDebt.usecase';
-import { DeleteDebt } from '@usecases/DeleteDebt.usecase';
-import { MarkDebtPaid } from '@usecases/MarkDebtPaid.usecase';
-import { ListDebts } from '@usecases/ListDebts.usecase';
-import { ExportDebts } from '@usecases/ExportDebts.usecase';
-import { DebtAggregates } from '@usecases/DebtAggregates.usecase';
+import { CreateDebt } from '@usecases/debt/CreateDebt.usecase';
+import { UpdateDebt } from '@usecases/debt/UpdateDebt.usecase';
+import { DeleteDebt } from '@usecases/debt/DeleteDebt.usecase';
+import { MarkDebtPaid } from '@usecases/debt/MarkDebtPaid.usecase';
+import { ListDebts } from '@usecases/debt/ListDebts.usecase';
+import { ExportDebts } from '@usecases/debt/ExportDebts.usecase';
+import { DebtAggregates } from '@usecases/debt/DebtAggregates.usecase';
 
 const repo = new PrismaDebtRepository();
 
