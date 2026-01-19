@@ -1,4 +1,3 @@
-// interface de usuario
 export interface IUser {
   id: string;
   email: string;

@@ -1,8 +1,6 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AuthRequest } from '../../middlewares/debtauth.middleware';
-
 import { PrismaDebtRepository } from '../../repositories/PrismaDebtRepository';
-
 import { CreateDebt } from '@usecases/debt/CreateDebt.usecase';
 import { UpdateDebt } from '@usecases/debt/UpdateDebt.usecase';
 import { DeleteDebt } from '@usecases/debt/DeleteDebt.usecase';
@@ -12,7 +10,6 @@ import { ExportDebts } from '@usecases/debt/ExportDebts.usecase';
 import { DebtAggregates } from '@usecases/debt/DebtAggregates.usecase';
 
 const repo = new PrismaDebtRepository();
-
 const createDebt = new CreateDebt(repo);
 const updateDebt = new UpdateDebt(repo);
 const deleteDebt = new DeleteDebt(repo);
@@ -23,9 +20,6 @@ const aggregates = new DebtAggregates(repo);
 
 export class DebtController {
 
-  /**
-   * POST /debts
-   */
   static async create(req: AuthRequest, res: Response) {
     try {
       const debt = await createDebt.execute(
@@ -38,9 +32,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * GET /debts?status=PENDING|PAID
-   */
   static async list(req: AuthRequest, res: Response) {
     try {
       const debts = await listDebts.execute(
@@ -53,9 +44,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * PUT /debts/:id
-   */
   static async update(req: AuthRequest, res: Response) {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -73,9 +61,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * DELETE /debts/:id
-   */
   static async delete(req: AuthRequest, res: Response)  {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -89,9 +74,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * POST /debts/:id/pay
-   */
   static async pay(req: AuthRequest, res: Response)  {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -106,9 +88,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * GET /debts/export/:format (json | csv)
-   */
   static async export(req: AuthRequest, res: Response)  {
     try {
       const format = req.params.format as 'json' | 'csv';
@@ -129,9 +108,6 @@ export class DebtController {
     }
   };
 
-  /**
-   * GET /debts/aggregates
-   */
   static async aggregates (req: AuthRequest, res: Response)  {
     try {
       const result = await aggregates.execute(req.user!.userId);
